@@ -1423,3 +1423,408 @@ void joueur1vsjoueur2()
         }
 
 }
+void tirer(char mat[10][10],char mata[10][10],char name[50],int g)
+{
+    for (;;)
+    {
+        if(g!=17)
+        {
+                affichergrille(mata);
+                printf("\n\nTour de %s ",name);
+                printf("chosissez ou frapper x y : ");
+                scanf("%d %d", &x,&y);
+                if(x>9 || x<0 || y>9 || y<0 || mata[x][y]=='X' || mata[x][y]=='*')
+                {
+                    printf("Vous ne pouvez pas tirer en ces coordonnees!!\n");
+                    continue;
+                }
+                else
+                {
+                    if(mat[x][y]=='P' || mat[x][y]=='C'||mat[x][y]=='T'||mat[x][y]=='O')
+                    {
+                        if(mata[x][y]!='X')
+                        {
+                            mata[x][y]='X';
+                            affichergrille(mata);
+                            system("cls");
+                            for(i=0;i<10;i++)
+                                {
+                                    for(j=0;j<10;j++)
+                                    {
+                                        if(mata[i][j]=='X')
+                                            g++;
+                                    }
+                                }
+                            gauche();
+                            printf("\n***********Touche**********\n");
+                            if (g == 17)
+                            {
+                                system("cls");
+                                printf("\n%s a gagne !!!\n",name);
+                                fin=clock();
+                                tempspartie(debut,fin);
+                                exit(1);
+                                break;
+                            }
+                            g = 0;
+                            continue;
+                        }
+                        else
+                        {
+                            printf("vous ne peuvez pas tirer en ces coordonnees!!\n");
+                            continue;
+                        }
+                    }
+                    else
+                        {
+                            mata[x][y]='*';
+                            break;
+                        }
+                }
+        }
+        else
+        {
+            printf("\n%s a gagne!!!\n",name);
+            fin=clock();
+            tempspartie(debut,fin);
+            exit(1);
+        }
+    }
+}
+void sauvegarder(char matrice1[10][10],char matrice2[10][10],char matrice3[10][10],char matrice4[10][10],FILE *f,char name1[15],char name2[15])
+    {
+        char nomfichier[150]="";
+
+        strcat(nomfichier,name1);
+        strcat(nomfichier,"vs");
+        strcat(nomfichier,name2);
+        strcat(nomfichier,".txt");
+        f=fopen(nomfichier,"w+");
+        int i,j;
+        if(f==NULL)
+        {
+            printf("fichier inexistant!!");
+            exit(1);
+        }
+        else
+        {
+            for(i=0;i<10;i++)
+                {
+                for(j=0;j<10;j++)
+                    {
+                        fprintf(f,"%c",matrice1[i][j]);
+                        fprintf(f,"%s"," ");
+                    }
+                    fprintf(f,"%s","\n");
+                }
+                fprintf(f,"%s","\n\n");
+            for(i=0;i<10;i++)
+                {
+                for(j=0;j<10;j++)
+                    {
+                        fprintf(f,"%c",matrice2[i][j]);
+                        fprintf(f,"%s"," ");
+                    }
+                    fprintf(f,"%s","\n");
+                }
+                fprintf(f,"%s","\n\n");
+            for(i=0;i<10;i++)
+                {
+                for(j=0;j<10;j++)
+                    {
+                        fprintf(f,"%c",matrice3[i][j]);
+                        fprintf(f,"%s"," ");
+                    }
+                    fprintf(f,"%s","\n");
+                }
+                fprintf(f,"%s","\n\n");
+            for(i=0;i<10;i++)
+                {
+                for(j=0;j<10;j++)
+                    {
+                        fprintf(f,"%c",matrice4[i][j]);
+                        fprintf(f,"%s"," ");
+                    }
+                    fprintf(f,"%s","\n");
+                }
+        }
+        fclose(f);
+    }
+void visualiser()
+{   
+
+    int s;
+    centre();
+    printf("Vous voulez Charger quelle partie:\n");
+    gauche();
+    printf("1:joueur vs ordinateur\n");
+    gauche();
+    printf("2:joueur1 vs joueur2\n");
+    scanf("%d",&s);
+    system("cls");
+    if(s==2)
+    {
+        char nom1[50],nom2[50],nom[200],nom0[200];
+        int n;
+        FILE *f;
+        centre();
+        printf("Entrez le nom du joueur 1: ");
+        scanf("%s",&nom1);
+        gauche();
+        printf("Entrez le nom du joueur 2: ");
+        scanf("%s",&nom2);
+        system("cls");
+        strcat(nom,nom1);
+        strcat(nom,"vs");
+        strcat(nom,nom2);
+        strcat(nom,"partie");
+        strcat(nom,".txt");
+        strcpy(nom0,nom);
+        f=fopen(nom0,"r");
+        if(f==NULL)
+        {
+            printf("partie inexistente");
+            exit(1);
+        }
+        else{
+        char tempstr[10];
+        fseek(f,0,SEEK_SET);
+
+        while(!feof(f))
+        {
+        affvisualiser(424,f);
+        printf("Cliquez sur ENTRER pour continuer!");
+        fflush(stdin);
+        gets(tempstr);
+        srand(time(NULL));
+        system("cls");
+        }
+        }
+    }
+
+    else if (s==1)
+    {
+
+        char nomj[50],nom22[50],nom00[200];
+        int n;
+        FILE *f;
+        centre();
+        printf("Entrez le nom du joueur: ");
+        scanf("%s",&nomj);
+        system("cls");
+        strcat(nom22,nomj);
+        strcat(nom22,"vsordinateurpartie.txt");
+        strcpy(nom00,nom22);
+        f=fopen(nom00,"r");
+        if(f==NULL)
+            {
+                printf("partie inexistente!!");
+                exit(1);
+            }
+            else
+            {
+                char tempstr[10];
+                fseek(f,0,SEEK_SET);
+                while(!feof(f))
+                {
+                    affvisualiser(424,f);
+                    printf("Cliquez sur ENTRER pour continuer!");
+                    fflush(stdin);
+                    gets(tempstr);
+                    srand(time(NULL));
+                    system("cls");
+                }
+            }
+    }
+}
+void affvisualiser(int n,FILE *f)
+{
+    char z;
+    for(i=0;i<n;i++)
+    {
+        fscanf(f,"%c",&z);
+        printf("%c",z);
+    }
+}
+float tempspartie(clock_t debut,clock_t fin)
+{
+    float temps_de_jeu;
+    temps_de_jeu =(((float)(fin - debut))/(float)CLOCKS_PER_SEC);
+    gauche();
+    printf("votre partie a dure: ");
+    affichertemps(temps_de_jeu);
+    return temps_de_jeu;
+}
+void placervsordinateur(char mat[10][10],Bateau bateau,int t,int cord[t][2],char joueur[50])
+{
+    
+    for (;;)
+        {
+            veri=0;
+            centre();
+            printf("%s (%d cases):\n",bateau.nom,t);
+            gauche();
+            printf("%s\n", joueur);
+            gauche();
+            printf("choisissez l'orientation du bateau\n");
+            gauche();
+            printf("Orientation(v/h): ");
+            scanf("%s", &orin);
+            gauche();
+            printf("Entrez la ligne et la colonne : ");
+            scanf("%d %d", &x, &y);
+            if (strcmp(orin, "h") == 0)
+            {
+                if (y > 10-bateau.taillebateau || y < 0 || x > 9 || x < 0|| mat[x][y]=='P'||mat[x][y]=='C'||mat[x][y]=='O'||mat[x][y]=='T')
+                {
+
+                    system("cls");
+                    system("cls");
+
+                    gauche();
+
+                    printf("Vous ne pouvez pas placer votre bateau ici!\n\n");
+                    gauche();
+                    printf("Essayez de nouveau!!\n\n\n");
+                    affichergrille(mat);
+                    continue;
+                }
+                else
+                {
+                    for(i=y;i<y+2;i++)
+                    {
+                        if(mat[x][i]!='.')
+                        {
+                            system("cls");
+                            printf("Vous ne pouvez pas placer votre bateau ici\n");
+                            affichergrille(mat);
+                            veri=1;
+                            break;
+                        }
+                    }
+                    if(veri==1)
+                        continue;
+                    else{
+                    for (i = y; i < y + bateau.taillebateau; i++)
+                    {
+                        mat[x][i] = bateau.symbole;
+                        cord[k][0] = x;
+                        cord[k][1] = i;
+                        k++;
+                    }
+                    break;
+                    }
+                }
+            }
+            if (strcmp(orin, "v") == 0)
+            {
+                if (x > 10-bateau.taillebateau || x < 0 || y > 9 || y < 0|| mat[x][y]=='P'||mat[x][y]=='C'||mat[x][y]=='O'||mat[x][y]=='T')
+                {
+
+                    system("cls");
+                    system("cls");
+                    gauche();
+
+                    printf("Vous ne pouvez pas placer votre bateau ici!\n\n");
+                    gauche();
+                    printf("Essayez de nouveau!!\n\n\n");
+
+                    affichergrille(mat);
+                    continue;
+                }
+                else
+                {
+                    for(i=x;i<x+2;i++)
+                    {
+                        if(mat[i][y]!='.')
+                        {
+                            system("cls");
+                            printf("Vous ne pouvez pas placer votre bateau ici\n");
+                            affichergrille(mat);
+                            veri=1;
+                            break;
+                        }
+                    }
+                    if(veri==1)
+                        continue;
+                    else  
+                    {   
+                    for (i = x; i < x + bateau.taillebateau; i++)
+                    {
+                        mat[i][y] = bateau.symbole;
+                        cord[k][0] = i;
+                        cord[k][1] = y;
+                        k++;
+                    }
+                    break;
+                    }
+                }
+            }
+        }
+}
+void placerordinateur(char mata[10][10],Bateau bateau)
+{
+    
+    for (;;)
+    {
+        veri = 0;
+        if (rand() % 2 == 1)
+            strcpy(orin, "h");
+        else
+            strcpy(orin, "v");
+        x = rand() % 10;
+        y = rand() % 10;
+        if (strcmp(orin, "h") == 0)
+        {
+            if (y > 10-bateau.taillebateau || y < 0 || x > 9 || x < 0)
+            {
+                continue;
+            }
+            else
+            {
+                for (i = y; i < y + bateau.taillebateau; i++)
+                {
+                    if (mata[x][i] != '.')
+                    {
+                        veri = 1;
+                        break;
+                    }
+                }
+                if (veri == 1)
+                    continue;
+                else
+                {
+                    for (i = y; i < y +bateau.taillebateau; i++)
+                        mata[x][i] = bateau.symbole;
+                    break;
+                }
+            }
+        }
+        if (strcmp(orin, "v") == 0)
+        {
+            if (x > 10-bateau.taillebateau || x < 0 || y > 9 || y < 0)
+            {
+                continue;
+            }
+            else
+            {
+                for (i = x; i < x + bateau.taillebateau; i++)
+                {
+                    if (mata[i][y] != '.')
+                    {
+                        veri = 1;
+                        break;
+                    }
+                }
+                if (veri == 1)
+                    continue;
+                else
+                {
+                    for (i = x; i < x + bateau.taillebateau; i++)
+                        mata[i][y] = bateau.symbole;
+                    break;
+                }
+            }
+        }
+    }
+}
