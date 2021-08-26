@@ -3181,3 +3181,72 @@ void statistiquesfinale(char matperdant[10][10],char matvainqueur[10][10],char j
 
 
 }
+void afficher_grille_double(char mat1[10][10],char mat2[10][10],char j1[15],char j2[15])
+{
+    printf("\n\n\n\n\n");   
+    printf("    ");
+    gauche();
+    for ( i = 0; i < 10; i++)
+        printf("%d   ",i);
+    printf("\t\t");    
+    printf("    ");
+    for ( i = 0; i < 10; i++)
+        printf("%d   ",i);
+    printf("\n    ");
+    gauche();
+    for ( i = 0; i < 10; i++)
+        printf("_   ");
+    printf("\t\t");    
+    printf("    ");
+    for ( i = 0; i < 10; i++)
+        printf("_   ");    
+    
+    printf("\n");    
+    
+    for (int i = 0; i < 10; i++)
+    {
+        gauche();
+        printf("%d|  ",i);
+        for (int j = 0; j < 10; j++)
+        {
+            printf("%c   ",mat1[i][j]);
+        }
+        printf("\t\t");
+        printf("%d|  ",i);
+        for (int j = 0; j < 10; j++)
+        {
+            
+            printf("%c   ",mat2[i][j]);         
+        }
+        printf("\n\n");
+        
+    }
+    printf("\n");
+    gauche();
+    printf("    ***************%s****************\t\t\t***************%s***************",j1,j2);
+}
+
+void findujeu()
+{
+    int z;
+    printf("\n\nla partie est termine\n\t1)retour au menu\n\t2)quitter le jeu");
+    printf("\ntapez votre choix: ");
+    scanf("%d",&z);
+    if (z==1)
+    {
+        menu();
+    }
+    else
+    {
+        exit(1);
+    }
+}
+void affichertemps (int secondes)
+    
+{
+    int heures = secondes /3600;
+    secondes -= heures*3600;
+    int minutes = secondes/60;
+    secondes -= minutes*60;
+    printf("%5s%dh:%s%dmin:%s%ds",heures > 9 ? "" : "0",heures,minutes > 9 ? "" : "0",minutes,secondes > 9 ? "" : "0",secondes);
+}
