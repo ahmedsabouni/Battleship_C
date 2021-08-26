@@ -1828,3 +1828,188 @@ void placerordinateur(char mata[10][10],Bateau bateau)
         }
     }
 }
+void sauvtoutepartie(char mat[10][10],char mata[10][10],FILE*f,char smiya[15],char smiya1[15])
+{
+    char nomfichier1[150]="";
+        strcat(nomfichier1,smiya);
+        strcat(nomfichier1,"vs");
+        strcat(nomfichier1,smiya1);
+        strcat(nomfichier1,"partie");
+        strcat(nomfichier1,".txt");
+        f=fopen(nomfichier1,"a+");
+        int i,j;
+        if(f==NULL)
+        {
+            printf("fichier inexistant!!");
+            exit(1);
+        }
+        else
+        {
+            for(i=0;i<10;i++)
+                {
+                for(j=0;j<10;j++)
+                    {
+                        fprintf(f,"%c",mat[i][j]);
+                        fprintf(f,"%s"," ");
+                    }
+                    fprintf(f,"%s","\n");
+                }
+                fprintf(f,"%s","\n\n");
+            for(i=0;i<10;i++)
+                {
+                for(j=0;j<10;j++)
+                    {
+                        fprintf(f,"%c",mata[i][j]);
+                        fprintf(f,"%s"," ");
+                    }
+                    fprintf(f,"%s","\n");
+                }
+                fprintf(f,"%s","\n\n");
+            fclose(f); 
+        }
+}
+
+void sauvgarderstatistiques(FILE *f,char joueur1[15],char joueur2[15],char matperdant[10][10],char matvainqueur[10][10],char jp[15],char jv[15],float secondes)
+{
+    char nomfichier[150]="";
+    strcat(nomfichier,joueur1);
+    strcat(nomfichier,"vs");
+    strcat(nomfichier,joueur2);
+    strcat(nomfichier,"stats");
+    strcat(nomfichier,".txt");
+    f=fopen(nomfichier,"w+");
+    if(f==NULL)
+        {
+            printf("fichier inexistant!!");
+            delay(2000);
+            menu();
+        }
+    int heures = secondes /3600;
+    secondes -= heures*3600;
+    int minutes = secondes/60;
+    secondes -= minutes*60;
+    fprintf(f,"\n\tvotre partie a dure: ");
+    fprintf(f,"%5s%dh:%s%dmin:%s%ds",heures > 9 ? "" : "0",heures,minutes > 9 ? "" : "0",minutes,secondes > 9 ? "" : "0",secondes);
+    float precisionp;
+    float touchep=0,ratep=0;
+    for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                if (matvainqueur[i][j]=='*')
+                {
+                    ratep++;
+                }
+                if (matvainqueur[i][j]=='X')
+                {
+                    touchep++;
+                }
+            }
+        }
+    precisionp=(touchep*100)/(touchep+ratep);
+    fprintf(f,"\n\n\t\t\t\t******score******\n");
+    fprintf(f,"\n\t\t%s\n",jp);
+    fprintf(f,"\tnombre de tirs rates; %.0lf\n",ratep);
+    fprintf(f,"\tnombre de tirs reussis: %.0lf\n",touchep); 
+    fprintf(f,"\tprecision : %.2lf/100\n",precisionp);
+    float touchev=0,ratev=0;
+    float precisionv=0;
+    for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                if (matperdant[i][j]=='*')
+                {
+                    ratev++;
+                }
+                if (matperdant[i][j]=='X')
+                {
+                    touchev++;
+                }
+            }
+        }
+    fprintf(f,"\n\t\t %s \n",jv);
+    precisionv=(touchev*100)/(17+ratev);
+    fprintf(f,"\tnombre de tirs rates; %.2lf\n",ratev);
+    fprintf(f,"\tprecision : %.2lf/100",precisionv);
+}
+
+void statistiques()
+{
+    int s;
+    centre();
+    printf("Vous voulez les statistiques de quelle partie ?:\n");
+    gauche();
+    printf("1:joueur vs ordinateur\n");
+    gauche();
+    printf("2:joueur1 vs joueur2\n");
+    scanf("%d",&s);
+    system("cls");
+    if (s==1)
+    {
+        char nom1[15],nom2[15],nom[100]="";
+        int n;
+        char j;
+        FILE *f;
+        centre();
+        printf("Entrez le nom du joueur: ");
+        scanf("%s",&nom1);
+        system("cls");
+
+        strcat(nom,nom1);
+        strcat(nom,"vs");
+        strcat(nom,"ordinateur");
+        strcat(nom,"stats");
+        strcat(nom,".txt");
+        f=fopen(nom,"r");
+        if(f==NULL)
+        {
+            printf("partie inexistente");
+            exit(1);
+        }
+        fseek(f,0,SEEK_SET);
+        while (!feof(f))
+        {
+            fscanf(f,"%c",&j);
+            
+            printf("%c",j);
+        }
+        findujeu();
+        fclose(f);
+    }
+    else if (s==2)
+    {
+        char nom1[15],nom2[15],nom[100]="";
+        int n;
+        char j;
+        FILE *f;
+        centre();
+        printf("Entrez le nom du joueur1: ");
+        scanf("%s",&nom1);
+        system("cls");
+        printf("Entrez le nom du joueur2: ");
+        scanf("%s",&nom2);
+        system("cls");
+        strcat(nom,nom1);
+        strcat(nom,"vs");
+        strcat(nom,nom2);
+        strcat(nom,"stats");
+        strcat(nom,".txt");
+
+        f=fopen(nom,"r");
+        if(f==NULL)
+        {
+            printf("partie inexistente");
+            exit(1);
+        }
+        fseek(f,0,SEEK_SET);
+        while (!feof(f))
+        {
+            fscanf(f,"%c",&j);
+            printf("%c",j);
+        }
+        fclose(f);
+        findujeu();
+    }
+
+}
