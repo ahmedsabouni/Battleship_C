@@ -3132,4 +3132,52 @@ FILE*pt;
     }
             system("cls");
         }
-} 
+}
+void statistiquesfinale(char matperdant[10][10],char matvainqueur[10][10],char jp[15],char jv[15])
+{
+    float precisionp;
+    float touchep=0,ratep=0;
+    for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                if (matvainqueur[i][j]=='*')
+                {
+                    ratep++;
+                }
+                if (matvainqueur[i][j]=='X')
+                {
+                    touchep++;
+                }
+            }
+        }
+    precisionp=(touchep*100)/(touchep+ratep);
+    printf("\n\n\t\t\t\t******score******\n");
+    printf("\n\t\t%s\n",jp);
+    printf("\tnombre de tirs rates; %.0lf\n",ratep);
+    printf("\tnombre de tirs reussis: %.0lf\n",touchep); 
+    printf("\tprecision : %.2lf %\n",precisionp);
+    float touchev=0,ratev=0;
+    float precisionv=0;
+    for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                if (matperdant[i][j]=='*')
+                {
+                    ratev++;
+                }
+                if (matperdant[i][j]=='X')
+                {
+                    touchev++;
+                }
+            }
+        }
+    printf("\n\t\t %s \n",jv);
+    precisionv=(touchev*100)/(17+ratev);
+    printf("\tnombre de tirs rates; %.2lf/100\n",ratev);
+    printf("\tprecision : %.2lf/100",precisionv);
+    
+
+
+}
