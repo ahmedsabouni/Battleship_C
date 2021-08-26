@@ -2013,3 +2013,270 @@ void statistiques()
     }
 
 }
+void charger()
+{
+    int t;
+    printf("Vous voulez charger quelle partie:\n");
+    printf("1:joueur vs ordinateur\n");
+    printf("2:joueur1 vs joueur2\n");
+    scanf("%d",&t);
+    if(t==1)
+        {
+        char nom1[15],nom3[40]="";
+        char nom2[20]="vsordinateur.txt";
+        printf("ENTREZ VOTRE NOM: ");
+        scanf("%s",&nom1);
+        strcat(nom3,nom1);
+        strcat(nom3,nom2);
+        charger1(nom3,nom1);
+        } 
+        if(t==2)
+        {
+        char nom1[15],nom3[40]="";
+        char nom2[20];  
+        printf("ENTREZ LE NOM DU JOUEUR1 : ");
+        scanf("%s",&nom1);
+        printf("ENTREZ LE NOM DU JOUEUR2: "); 
+        scanf("%s",&nom2); 
+        strcat(nom3,nom1);
+        strcat(nom3,"vs");
+        strcat(nom3,nom2);
+        strcat(nom3,".txt");
+        charger2(nom3,nom1,nom2);
+        } 
+}
+void charger2(char fichier[40],char nomjoueur1charger[15],char nomjoueur2charger[15])
+{
+    FILE *myFile;
+    
+    myFile = fopen(fichier, "r");
+;
+char matj1[10][10],mataj1[10][10],matj2[10][10],mataj2[10][10],orin[2];
+int gagner1;
+FILE*f;
+FILE*pt;
+
+    
+    int i,j;
+    if (myFile == NULL){
+        printf("Error Reading File\n");
+        exit (0);
+    }
+    /***/
+
+    for (i = 0; i < 10; i++)
+    {
+        for (j = 0; j < 10; j++)
+        {
+        fscanf(myFile, "%c ", &matj1[i][j]);
+        }
+
+    }
+
+    fseek(myFile, 0, SEEK_CUR);
+
+    for (i = 0; i < 10; i++)
+    {
+        for (j = 0; j < 10; j++)
+        {
+        fscanf(myFile, "%c ", &matj2[i][j]);
+        }
+
+    }
+        fseek(myFile, 0, SEEK_CUR);
+
+    for (i = 0; i < 10; i++)
+    {
+        for (j = 0; j < 10; j++)
+        {
+        fscanf(myFile, "%c ", &mataj1[i][j]);
+        }
+
+    }
+        fseek(myFile, 0, SEEK_CUR);
+
+    for (i = 0; i < 10; i++)
+    {
+        for (j = 0; j < 10; j++)
+        {
+        fscanf(myFile, "%c ", &mataj2[i][j]);
+        }
+
+    }
+    int s,z;
+
+    for( s=0;s<10;s++)
+    {
+        for( z=0;z<10;z++)
+        {
+            printf("%c ",mataj1[s][z]);
+        }
+        printf("\n");
+    }
+    printf("\n TAB 1 \n");
+    
+    for( s=0;s<10;s++)
+    {
+        for( z=0;z<10;z++)
+        {
+            printf("%c ", mataj2[s][z]);
+        }
+        printf("\n");
+    }
+    for (;;)
+        {
+        
+        /***joueur 1 frappe***/
+            
+        for (;;)
+        {
+        if(gagner!=17)
+        {
+                afficher_grille_double(mataj1,mataj2,nomjoueur1charger,nomjoueur2charger);
+                printf("\n\nTour de %s ",nomjoueur1charger);
+                printf("chosissez ou frapper x y : ");
+                scanf("%d %d", &x,&y);
+                if(x>9 || x<0 || y>9 || y<0 || matj2[x][y]=='X' || matj2[x][y]=='*')
+                {
+                    printf("tu ne peux pas tirer en ces coordonnees!!\n");
+                    continue;
+                }
+                else
+                {
+                    if(matj2[x][y]=='P' || matj2[x][y]=='C'||matj2[x][y]=='T'||matj2[x][y]=='O')
+                    {
+                        if(mataj2[x][y]!='X')
+                        {
+                            mataj2[x][y]='X';
+                            sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+                            sauvtoutepartie(matj1,mataj2,pt,j1.nom,j2.nom);
+                            afficher_grille_double(mataj1,mataj2,nomjoueur1charger,nomjoueur2charger);
+                            system("cls");
+                            for(i=0;i<10;i++)
+                                {
+                                    for(j=0;j<10;j++)
+                                    {
+                                        if(mataj2[i][j]=='X')
+                                            gagner++;
+                                    }
+                                }
+                            gauche();
+                            printf("\n************Touche*********\n");
+                            if (gagner == 17)
+                            {
+                                system("cls");
+                                printf("\n%s a gagne !!!\n",j1.nom);
+                                fin=clock();
+                                tempspartie(debut,fin);
+                                statistiquesfinale(mataj2,mataj1,j2.nom,j1.nom);
+                                sauvgarderstatistiques(f,j1.nom,j2.nom,mataj2,mataj1,j2.nom,j1.nom,tempspartie(debut,fin));
+                                findujeu();
+                                break;
+                            }
+                            gagner = 0;
+                            continue;
+                        }
+                        else
+                        {
+                            printf("vous ne peuvez pas tirer en ces coordonnees!!\n");
+                            continue;
+                        }
+                    }
+                    else
+                        {
+                            mataj2[x][y]='*';
+                            sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+                            sauvtoutepartie(matj1,mataj2,pt,j1.nom,j2.nom);
+                            break;
+                        }
+                }
+        }
+        else
+        {
+            printf("\n%s a gagne!!!\n",j1.nom);
+            fin=clock();
+            tempspartie(debut,fin);
+            statistiquesfinale(mataj2,mataj1,j2.nom,j1.nom);
+            sauvgarderstatistiques(f,j1.nom,j2.nom,mataj2,mataj1,j2.nom,j1.nom,tempspartie(debut,fin));
+            findujeu();
+        }
+    }
+            system("cls");
+        /***joueur 2 frappe***/
+        
+            for (;;)
+        {
+        if(gagner1!=17)
+        {
+                afficher_grille_double(mataj1,mataj2,nomjoueur1charger,nomjoueur2charger);
+                printf("\n\nTour de %s ",nomjoueur2charger);
+                printf("chosissez ou frapper x y : ");
+                scanf("%d %d", &x,&y);
+                if(x>9 || x<0 || y>9 || y<0 || matj1[x][y]=='X' || matj1[x][y]=='*')
+                {
+                    printf("tu ne peux pas tirer en ces coordonnees!!\n");
+                    continue;
+                }
+                else
+                {
+                    if(matj1[x][y]=='P' || matj1[x][y]=='C'||matj1[x][y]=='T'||matj1[x][y]=='O')
+                    {
+                        if(mataj1[x][y]!='X')
+                        {
+                            mataj1[x][y]='X';
+                            sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+                            sauvtoutepartie(mataj1,matj2,pt,j1.nom,j2.nom);
+                            afficher_grille_double(mataj1,mataj2,nomjoueur1charger,nomjoueur2charger);
+                            system("cls");
+                            for(i=0;i<10;i++)
+                                {
+                                    for(j=0;j<10;j++)
+                                    {
+                                        if(mataj1[i][j]=='X')
+                                            gagner1++;
+                                    }
+                                }
+                            gauche();
+                            printf("\n********Touche*********\n");
+                            if (gagner1 == 17)
+                            {
+                                system("cls");
+                                printf("\n%s a gagne !!!\n",j2.nom);
+                                fin=clock();
+                                tempspartie(debut,fin);
+                                statistiquesfinale(mataj1,mataj2,j1.nom,j2.nom);
+                                sauvgarderstatistiques(f,j1.nom,j2.nom,mataj1,mataj2,j1.nom,j2.nom,tempspartie(debut,fin));
+                                findujeu();
+                                break;
+                            }
+                            gagner1 = 0;
+                            continue;
+                        }
+                        else
+                        {
+                            printf("vous ne peuvez pas tirer en ces coordonnees!!\n");
+                            continue;
+                        }
+                    }
+                    else
+                        {
+                            mataj1[x][y]='*';
+                            sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+                            sauvtoutepartie(mataj1,matj2,pt,j1.nom,j2.nom);
+                            break;
+                        }
+                }
+        }
+        else
+        {
+            printf("\n%s a gagne!!!\n",j2.nom);
+            fin=clock();
+            tempspartie(debut,fin);
+            statistiquesfinale(mataj1,mataj2,j1.nom,j2.nom);
+            sauvgarderstatistiques(f,j1.nom,j2.nom,mataj1,mataj2,j1.nom,j2.nom,tempspartie(debut,fin));
+            findujeu();
+        }
+    }
+            system("cls");
+        }
+} 
