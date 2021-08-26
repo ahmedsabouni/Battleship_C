@@ -2045,6 +2045,859 @@ void charger()
         charger2(nom3,nom1,nom2);
         } 
 }
+
+void charger1(char fichier[40],char nomjoueurcharger[15])
+{
+    int er;
+    FILE *myFile;
+    FILE *fdiff;
+    char jf[50]="";
+    strcat(jf,nomjoueurcharger);
+    strcat(jf,"diff.txt");
+    fdiff=fopen(jf,"r");
+    myFile = fopen(fichier, "r");
+    fseek(fdiff,0,SEEK_SET);
+    while (!feof(fdiff))
+    {
+      fscanf(fdiff,"%d",&er);  
+    }
+    
+    
+    
+    char matj[10][10];
+    char matordi[10][10];
+    char mataj[10][10];
+    char mataordi[10][10];
+    
+    
+    int i,j;
+    if (myFile == NULL){
+        printf("Error Reading File\n");
+        exit (0);
+    }
+    /***/
+
+    for (i = 0; i < 10; i++)
+    {
+        for (j = 0; j < 10; j++)
+        {
+        fscanf(myFile, "%c ", &matj[i][j]);
+        }
+
+    }
+
+    fseek(myFile, 0, SEEK_CUR);
+
+    for (i = 0; i < 10; i++)
+    {
+        for (j = 0; j < 10; j++)
+        {
+        fscanf(myFile, "%c ", &matordi[i][j]);
+        }
+
+    }
+        fseek(myFile, 0, SEEK_CUR);
+
+    for (i = 0; i < 10; i++)
+    {
+        for (j = 0; j < 10; j++)
+        {
+        fscanf(myFile, "%c ", &mataj[i][j]);
+        }
+
+    }
+        fseek(myFile, 0, SEEK_CUR);
+
+    for (i = 0; i < 10; i++)
+    {
+        for (j = 0; j < 10; j++)
+        {
+        fscanf(myFile, "%c ", &mataordi[i][j]);
+        }
+
+    }
+    int s,z;
+
+    for( s=0;s<10;s++)
+    {
+        for( z=0;z<10;z++)
+        {
+            printf("%c ",mataj[s][z]);
+        }
+        printf("\n");
+    }
+    printf("\n TAB 1 \n");
+    
+    for( s=0;s<10;s++)
+    {
+        for( z=0;z<10;z++)
+        {
+            printf("%c ", mataordi[s][z]);
+        }
+        printf("\n");
+    }
+    
+
+    int a = 0, b = 0, c = 0, d = 0,k=0, probab, diff, ch;
+    diff=er;
+    fclose(fdiff);
+    int cordP[5][2], cordC[4][2], cordCT[3][2],cord2CT[3][2], cordT[2][2];
+     diff=3;
+    FILE*f;
+    FILE*fp;
+    char ordi[15]="ordinateur";
+    for (;;)
+    {
+        for (;;)
+    {
+            system("cls");
+            afficher_grille_double(mataj,mataordi,nomjoueurcharger,ordi);
+            
+            for (;;)
+        {
+            if (gagner!=17)
+            {
+                printf("\nEntrez la ligne  et la colonne: ");
+                scanf("%d %d", &x, &y);
+                if (x > 9 || x < 0 || y > 9 || y < 0 || mataordi[x][y] == 'X' || mataordi[x][y] == '*')
+                {
+                    printf("tu ne peux pas tirer en ces coordonnees!!\n");
+                    continue;
+                }
+                else
+                {
+                    if (matordi[x][y] == 'P' || matordi[x][y] == 'C' || matordi[x][y] == 'T' || matordi[x][y] == 'O')
+                    {
+                        if (mataordi[x][y] != 'X')
+                        {
+                            mataordi[x][y] = 'X';
+                            sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                            sauvtoutepartie(mataj,mataordi,fp,nomjoueurcharger,ordi);
+                            system("cls");
+                            afficher_grille_double(mataj,mataordi,nomjoueurcharger,ordi);
+                            for (i = 0; i < 10; i++)
+                            {
+                                for (j = 0; j < 10; j++)
+                                {
+                                    if (mataordi[i][j] == 'X')
+                                        gagner++;
+                                }
+                            }
+                            gauche();
+                            printf("\n*************Touche*********\n");
+
+                            if (gagner == 17)
+                            {
+                                printf("\nvous avez gagne!!!\n");
+                                fin=clock();
+                                tempspartie(debut,fin);
+                                statistiquesfinale(mataordi,mataj,nomjoueurcharger,ordi);
+                                sauvgarderstatistiques(f,nomjoueurcharger,ordi,mataordi,mataj,ordi,nomjoueurcharger,tempspartie(debut,fin));
+                                findujeu();
+                                break;
+                            }
+                            gagner = 0;
+
+                            continue;
+                        }
+                        else
+                        {
+                            printf("vous ne peuvez pas tirer en ces coordonnees!!\n");
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        mataordi[x][y] = '*';
+                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                        sauvtoutepartie(mataj,mataordi,fp,nomjoueurcharger,ordi);
+                        printf("rate\n");
+                        break;
+                    }
+                }
+            }
+            else{
+                    printf("\n *********** vous avez perdu!!!***********\n");
+                    fin=clock();
+                    tempspartie(debut,fin);
+                    statistiquesfinale(mataj,mataordi,nomjoueurcharger,ordi);
+                    sauvgarderstatistiques(f,nomjoueurcharger,ordi,mataj,mataordi,ordi,nomjoueurcharger,tempspartie(debut,fin));
+                    findujeu();
+                }
+        }
+        for (;;)
+        {
+    ///facile///
+                if(diff==1)
+            {
+                x=rand()%10;
+                y=rand()%10;
+
+                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                {
+                    continue;
+                }
+                else
+                {
+                    if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                    {
+                        if (mataj[x][y] != 'X')
+                        {
+                            mataj[x][y] = 'X';
+                            sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                            system("cls");
+                            afficher_grille_double(mataj,mataordi,nomjoueurcharger,ordi);
+                            delay(1000);
+                            printf("\n***********touche*********\n");
+                            continue;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        mataj[x][y] = '*';
+                        printf("rate\n");
+                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                        break;
+                    }
+                }
+        }
+          ////////////moyen///////////
+
+            if(diff==2)
+            {
+                probab = rand() % 20;
+                if (probab == 6 && a < 5)
+                {
+                    x = cordP[a][0];
+                    y = cordP[a][1];
+                    a++;
+                }
+                else if (probab == 7&& b < 4)
+                {
+                    x = cordC[b][0];
+                    y = cordC[b][1];
+                    b++;
+                }
+                else if (probab == 4 && d < 3)
+                {
+                i=rand()%2;
+                    if(i==1){
+                    x = cordCT[d][0];
+                    y = cordCT[d][1];
+                    d++;
+                    }
+                    else
+                    {
+                        x = cord2CT[d][0];
+                        y = cord2CT[d][1];
+                        d++;
+                    }
+                }
+                else if (probab == 3 && c < 2)
+                {
+                    x = cordT[c][0];
+                    y = cordT[c][1];
+                    c++;
+                }
+                else
+                {
+                    x = rand() % 10;
+                    y = rand() % 10;
+                }
+                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                {
+                    continue;
+                }
+                else
+                {
+                    if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                    {
+                        if (mataj[x][y] != 'X')
+                        {
+                            mataj[x][y] = 'X';
+                            sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                            system("cls");
+                            afficher_grille_double(mataj,mataordi,nomjoueurcharger,ordi);
+                            delay(1000);
+                            continue;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        mataj[x][y] = '*';
+                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                        break;
+                    }
+                }
+        }
+          ///////////dificilee//////////////////////
+
+if(diff==3)
+
+            {
+                int w;
+
+                x=rand()%10;
+                y=rand()%10;
+
+
+                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                {
+                    continue;
+                }
+                else
+                {
+
+                    if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                    {
+                        if (mataj[x][y] != 'X')
+                        {
+                            mataj[x][y] = 'X';
+                            sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                            system("cls");
+                            affichergrille(mataordi);
+                            printf("\n");
+                            affichergrille(mataj);
+                            delay(1000);
+                            w=rand()%4;
+
+                            if(w==1)
+                            {
+                                x=x+1;
+                                y=y;
+
+
+                            if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                    mataj[x][y] = 'X';
+                                    sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                    system("cls");
+                                    affichergrille(mataordi);
+                                    printf("\n");
+                                    affichergrille(mataj);
+                                    delay(1000);
+                                    x=x+1;
+                                    y=y;
+                                }
+                                }
+                                else
+                                { 
+                                mataj[x][y] = '*';
+                                break;
+                                }
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);
+
+
+                                x=x+1;
+                                y=y;
+
+
+
+                                }
+                                }
+                                    else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);
+
+
+                                x=x+1;
+                                y=y;
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                    mataj[x][y] = 'X';
+                                    sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                    system("cls");
+                                    affichergrille(mataordi);
+                                    printf("\n");
+                                    affichergrille(mataj);
+                                    delay(1000);
+                                }
+                                }
+                                else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+
+
+
+
+                            }
+                                }
+                                else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+
+                            }
+                                    if(w==2)
+                            {
+                            x=x;
+                            y=y+1;
+
+
+                            if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);
+
+
+                                x=x;
+                                y=y+1;
+
+                                }
+                                }
+                                else
+                            {
+                                mataj[x][y] = '*';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                break;
+                            }
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);
+
+
+                                x=x;
+                                y=y+1;
+                                }
+                                }
+                                else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);
+
+
+                                x=x;
+                                y=y+1;
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);}
+                                }
+                                else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+
+
+
+                                }
+                                }
+                                else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+
+                            }
+                                    if(w==3)
+                            {
+                            x=x-1;
+                            y=y;
+
+
+                            if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);
+
+
+                                x=x-1;
+                                y=y;
+
+
+
+                                }
+                                }
+                                else
+                            {
+                                mataj[x][y] = '*';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                break;
+                            }
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);
+
+
+                                x=x-1;
+                                y=y;
+
+
+
+                                }
+                                }
+                                    else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);
+
+
+                                x=x-1;
+                                y=y;
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);}
+                                }
+                                else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+
+
+
+                                }
+                                }
+                                else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+
+                                    }
+                            else
+                            {
+                            x=x;
+                            y=y-1;
+
+
+                            if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);
+
+
+                                x=x;
+                                y=y-1;
+
+
+
+                                }
+                                }
+                                else
+                            {
+                                mataj[x][y] = '*';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                break;
+                            }
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);
+
+
+                                x=x;
+                                y=y-1;
+
+
+
+                                }
+                                }
+                                    else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);
+
+
+                                x=x;
+                                y=y-1;
+                                if (x > 9 || x < 0 || y > 9 || y < 0 || mataj[x][y] == 'X' || mataj[x][y] == '*')
+                                {
+                                    continue;
+                                }
+                            if (matj[x][y] == 'P' || matj[x][y] == 'C' || matj[x][y] == 'T' || matj[x][y] == 'O')
+                                {
+                                    if (mataj[x][y] != 'X')
+                                {
+                                mataj[x][y] = 'X';
+                                sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                system("cls");
+                                affichergrille(mataordi);
+                                printf("\n");
+                                affichergrille(mataj);
+                                delay(1000);}
+                                }
+                                else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+
+                            }
+                                }
+                                else
+                                    {
+                                        mataj[x][y] = '*';
+                                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                                        break;
+                                    }
+                            }
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        mataj[x][y] = '*';
+                        sauvegarder(matj,matordi,mataj,mataordi,f,nomjoueurcharger,ordi);
+                        break;
+                    }
+                }
+    }
+}
+            for (i = 0; i < 10; i++)
+            {
+                for (j = 0; j < 10; j++)
+                {
+                    if (mataordi[i][j] == 'X')
+                        gagner++;
+                }
+            }
+
+            if (gagner == 17)
+            {
+                printf("\n ************vous avez  gagne!*************\n");
+                fin=clock();
+                tempspartie(debut,fin);
+                statistiquesfinale(mataordi,mataj,nomjoueurcharger,ordi);
+                sauvgarderstatistiques(f,nomjoueurcharger,ordi,mataordi,mataj,ordi,nomjoueurcharger,tempspartie(debut,fin));
+                findujeu();
+                break;
+            }
+            gagner = 0;
+
+            for (i = 0; i < 10; i++)
+            {
+                for (j = 0; j < 10; j++)
+                {
+                    if (mataj[i][j] == 'X')
+                        gagner++;
+                }
+            }
+
+            if (gagner == 17)
+            {
+                printf("\n *********** vous avez perdu!!!***********\n");
+                fin=clock();
+                tempspartie(debut,fin);
+                statistiquesfinale(mataj,mataordi,nomjoueurcharger,ordi);
+                sauvgarderstatistiques(f,nomjoueurcharger,ordi,mataj,mataordi,ordi,nomjoueurcharger,tempspartie(debut,fin));
+                findujeu();
+                break;
+            }
+            gagner = 0;
+    }
+    }
+
+}
+
 void charger2(char fichier[40],char nomjoueur1charger[15],char nomjoueur2charger[15])
 {
     FILE *myFile;
