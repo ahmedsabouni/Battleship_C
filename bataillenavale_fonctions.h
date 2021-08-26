@@ -1129,3 +1129,297 @@ if(diff==3)
             gagner = 0;
         }
 }
+
+void joueur1vsjoueur2()
+{
+    clock_t debut,fin;
+    char matj1[10][10],mataj1[10][10],matj2[10][10],mataj2[10][10],orin[2];
+    int gagner1;
+    FILE*f;
+    FILE*pt;
+
+    
+
+        centre();
+        gauche();
+        debut=clock();
+        printf("joueur1 vs joueur2:\n");
+
+        printf("Entrer Nom de joueur 1:\n");
+        scanf("%s",&j1.nom);
+
+        printf("Entrer Nom de joueur 2:\n");
+        scanf("%s",&j2.nom);
+        printf("%s vs %s \n",j1.nom,j2.nom);
+        system("cls");
+
+        initialiser_matrices(matj2);
+        initialiser_matrices(matj1);
+        initialiser_matrices(mataj1);
+        initialiser_matrices(mataj2);
+
+        printf("%s placez vos bateaux:\n",j1.nom);
+
+        affichergrille(matj1);
+        /****P:porte-avions***/
+
+        placer(matj1,porte_avion);
+        sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+        sauvtoutepartie(matj1,mataj2,pt,j1.nom,j2.nom);
+        k=0;
+        system("cls");
+        affichergrille(matj1);
+        /***C:CROISEUR***/
+
+        placer(matj1,croiseur);
+        sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+        sauvtoutepartie(matj1,mataj2,pt,j1.nom,j2.nom);
+        k=0;
+        system("cls");
+        affichergrille(matj1);
+        /******CT:Contre-Torpilleur******/
+        placer(matj1,contre_torpilleur);
+        sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+        sauvtoutepartie(matj1,mataj2,pt,j1.nom,j2.nom);
+        k=0;
+        system("cls");
+        affichergrille(matj1);
+        /******CT:Contre-Torpilleur2******/
+        placer(matj1,contre_torpilleur);
+        sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+        sauvtoutepartie(matj1,mataj2,pt,j1.nom,j2.nom);
+        k=0;
+        system("cls");
+        affichergrille(matj1);
+        /********T:Torpilleur******/
+
+        placer(matj1,torpilleur);
+        sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+        sauvtoutepartie(matj1,mataj2,pt,j1.nom,j2.nom);
+        system("cls");
+        affichergrille(matj1);
+        printf("\n\n\nCliquer sur ENTER pour continuer!");
+        fflush(stdin);
+        gets(tempstr);
+        srand(time(NULL));
+        system("cls");
+        printf("%s placez vos bateaux:\n",j2.nom);
+
+        affichergrille(matj2);
+        /*******porte-avions J2*******/
+        /*******porte-avions*******/
+        /*******porte-avions*******/
+        /*******porte-avions*******/
+
+        placer(matj2,porte_avion);
+        sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+        sauvtoutepartie(mataj1,matj2,pt,j1.nom,j2.nom);
+        k=0;
+        system("cls");
+        affichergrille(matj2);
+        /********B:Croiseur********/
+        /********B:Croiseur********/
+        /********B:Croiseur********/
+        /********B:Croiseur********/
+
+        placer(matj2,croiseur);
+        sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+        sauvtoutepartie(mataj1,matj2,pt,j1.nom,j2.nom);
+        k=0;
+        system("cls");
+        affichergrille(matj2);
+        /******Contre-Torpilleur********/
+        /******Contre-Torpilleur********/
+        /******Contre-Torpilleur********/
+        /******Contre-Torpilleur********/
+        /******Contre-Torpilleur********/
+        placer(matj2,contre_torpilleur);
+        sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+        sauvtoutepartie(mataj1,matj2,pt,j1.nom,j2.nom);
+        k=0;
+        system("cls");
+        affichergrille(matj2);
+        /******CT:Contre-Torpilleur2******/
+        placer(matj2,contre_torpilleur);
+        sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+        sauvtoutepartie(mataj1,matj2,pt,j1.nom,j2.nom);
+        k=0;
+        system("cls");
+        affichergrille(matj2);
+        /******Torpilleur*****/
+        /******Torpilleur*****/
+        /******Torpilleur*****/
+        /******Torpilleur*****/
+        placer(matj2,torpilleur);
+        sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+        sauvtoutepartie(mataj1,matj2,pt,j1.nom,j2.nom);
+        system("cls");
+        affichergrille(matj2);
+        printf("\n\n\nCliquer sur ENTER pour continuer!");
+        fflush(stdin);
+        gets(tempstr);
+        srand(time(NULL));
+        system("cls");
+
+
+
+        for (;;)
+        {
+        
+        /***joueur 1 frappe***/
+            
+        for (;;)
+        {
+        if(gagner!=17)
+        {
+                
+                afficher_grille_double(mataj1,mataj2,j1.nom,j2.nom);
+                printf("\n\nTour de %s ",j1.nom);
+                printf("chosissez ou frapper x y : ");
+                scanf("%d %d", &x,&y);
+                if(x>9 || x<0 || y>9 || y<0 || matj2[x][y]=='X' || matj2[x][y]=='*')
+                {
+                    printf("tu ne peux pas tirer en ces coordonnees!!\n");
+                    continue;
+                }
+                else
+                {
+                    if(matj2[x][y]=='P' || matj2[x][y]=='C'||matj2[x][y]=='T'||matj2[x][y]=='O')
+                    {
+                        if(mataj2[x][y]!='X')
+                        {
+                            mataj2[x][y]='X';
+                            sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+                            sauvtoutepartie(matj1,mataj2,pt,j1.nom,j2.nom);
+                            afficher_grille_double(mataj1,mataj2,j1.nom,j2.nom);
+                            system("cls");
+                            for(i=0;i<10;i++)
+                                {
+                                    for(j=0;j<10;j++)
+                                    {
+                                        if(mataj2[i][j]=='X')
+                                            gagner++;
+                                    }
+                                }
+                            gauche();
+                            printf("\n************touche*******\n");
+                            if (gagner == 17)
+                            {
+                                system("cls");
+                                printf("\n%s a gagne !!!\n",j1.nom);
+                                fin=clock();
+                                tempspartie(debut,fin);
+                                statistiquesfinale(mataj2,mataj1,j2.nom,j1.nom);
+                                sauvgarderstatistiques(f,j1.nom,j2.nom,mataj2,mataj1,j2.nom,j1.nom,tempspartie(debut,fin));
+                                findujeu();
+                                break;
+                            }
+                            gagner = 0;
+                            continue;
+                        }
+                        else
+                        {
+                            printf("vous ne peuvez pas tirer en ces coordonnees!!\n");
+                            continue;
+                        }
+                    }
+                    else
+                        {
+                            mataj2[x][y]='*';
+                            sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+                            sauvtoutepartie(matj1,mataj2,pt,j1.nom,j2.nom);
+                            break;
+                        }
+                }
+        }
+        else
+        {
+            printf("\n%s a gagne!!!\n",j1.nom);
+            fin=clock();
+            tempspartie(debut,fin);
+            statistiquesfinale(mataj2,mataj1,j2.nom,j1.nom);
+            sauvgarderstatistiques(f,j1.nom,j2.nom,mataj2,mataj1,j2.nom,j1.nom,tempspartie(debut,fin));
+            findujeu();
+        }
+    }
+            system("cls");
+        /***joueur 2 frappe***/
+        
+            for (;;)
+        {
+        if(gagner1!=17)
+        {
+                //affichergrille(mataj1);
+                afficher_grille_double(mataj1,mataj2,j1.nom,j2.nom);
+                printf("\n\nTour de %s ",j2.nom);
+                printf("chosissez ou frapper x y : ");
+                scanf("%d %d", &x,&y);
+                if(x>9 || x<0 || y>9 || y<0 || matj1[x][y]=='X' || matj1[x][y]=='*')
+                {
+                    printf("tu ne peux pas tirer en ces coordonnees!!\n");
+                    continue;
+                }
+                else
+                {
+                    if(matj1[x][y]=='P' || matj1[x][y]=='C'||matj1[x][y]=='T'||matj1[x][y]=='O')
+                    {
+                        if(mataj1[x][y]!='X')
+                        {
+                            mataj1[x][y]='X';
+                            sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+                            sauvtoutepartie(mataj1,matj2,pt,j1.nom,j2.nom);
+                            afficher_grille_double(mataj1,mataj2,j1.nom,j2.nom);
+                            system("cls");
+                            for(i=0;i<10;i++)
+                                {
+                                    for(j=0;j<10;j++)
+                                    {
+                                        if(mataj1[i][j]=='X')
+                                            gagner1++;
+                                    }
+                                }
+                            gauche();
+                            printf("\n***********Touche*********\n");
+                            if (gagner1 == 17)
+                            {
+                                system("cls");
+                                printf("\n%s a gagne !!!\n",j2.nom);
+                                fin=clock();
+                                tempspartie(debut,fin);
+                                statistiquesfinale(mataj1,mataj2,j1.nom,j2.nom);
+                                sauvgarderstatistiques(f,j1.nom,j2.nom,mataj1,mataj2,j1.nom,j2.nom,tempspartie(debut,fin));
+                                findujeu();
+                                break;
+                            }
+                            gagner1 = 0;
+                            continue;
+                        }
+                        else
+                        {
+                            printf("vous ne peuvez pas tirer en ces coordonnees!!\n");
+                            continue;
+                        }
+                    }
+                    else
+                        {
+                            mataj1[x][y]='*';
+                            sauvegarder(matj1,matj2,mataj1,mataj2,f,j1.nom,j2.nom);
+                            sauvtoutepartie(mataj1,matj2,pt,j1.nom,j2.nom);
+                            break;
+                        }
+                }
+        }
+        else
+        {
+            printf("\n%s a gagne!!!\n",j2.nom);
+            fin=clock();
+            tempspartie(debut,fin);
+            statistiquesfinale(mataj1,mataj2,j1.nom,j2.nom);
+            sauvgarderstatistiques(f,j1.nom,j2.nom,mataj1,mataj2,j1.nom,j2.nom,tempspartie(debut,fin));
+            findujeu();
+        }
+    }
+            system("cls");
+        }
+
+}
