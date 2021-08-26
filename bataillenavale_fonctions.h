@@ -292,3 +292,24 @@ void themes()
     }
 
 }
+void nouvelle_partie()
+{
+
+    int choix2;
+    choix2=menunouvellepartie();
+
+    if (choix2 == 1)
+    {
+        joueurvsordinateur();
+    }
+
+    else if (choix2==2)
+    {
+        joueur1vsjoueur2();
+    }
+    else if (choix2==3)
+    {
+        menu();
+    }
+
+}
